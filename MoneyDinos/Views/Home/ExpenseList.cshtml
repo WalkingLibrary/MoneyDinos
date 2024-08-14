@@ -1,0 +1,31 @@
+﻿@model IEnumerable<MoneyDinos.Models.Expense>
+
+<h2>Expense List</h2>
+
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>Date</th>
+        <th>Description</th>
+        <th>Amount</th>
+        <th>Category</th>
+        <th>Is Recurring</th>
+        <th>Recurrence Interval</th>
+        <th>Notes</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var expense in Model)
+    {
+        <tr>
+            <td>@expense.Date.ToString("yyyy-MM-dd")</td>
+            <td>@expense.Description</td>
+            <td>@expense.Amount.ToString("C")</td>
+            <td>@expense.Category</td>
+            <td>@expense.IsRecurring ? "Yes" : "No"</td>
+            <td>@expense.IsRecurring ? expense.RecurrenceInterval.ToString() : "N/A"</td>
+            <td>@expense.Notes</td>
+        </tr>
+    }
+    </tbody>
+</table>

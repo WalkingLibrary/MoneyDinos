@@ -22,6 +22,32 @@ public class HomeController : Controller
         return View();
     }
 
+    public IActionResult CreateExpense()
+    {
+        return View();
+    }
+
+    [HttpPost]
+    public IActionResult CreateExpense(Expense model)
+    {
+        if (ModelState.IsValid)
+        {
+            _context.Expenses.Add(model);
+            _context.SaveChanges();
+            return RedirectToAction("Index"); // Redirect to a list or summary page after saving
+        }
+    
+        return View(model); // If validation fails, return to the form with validation messages
+    }
+
+
+    
+    public IActionResult ExpenseList()
+    {
+        var expenses = _context.Expenses.ToList();
+        return View(expenses);
+    }
+
     // Example action to test the database connection
     public IActionResult TestDbConnection()
     {
