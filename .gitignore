@@ -1,1 +1,9 @@
 ﻿/.idea/
+
+
+# Ignore development environment settings
+./appsettings.Development.json
+
+# Ignore any environment-specific settings you don't want to commit
+./appsettings.Production.json
+./appsettings.Staging.json
