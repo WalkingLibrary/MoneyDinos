@@ -2,6 +2,7 @@
 
 <h2>Expense List</h2>
 
+<h3>Recurring Expenses</h3>
 <table class="table table-striped">
     <thead>
     <tr>
@@ -9,22 +10,53 @@
         <th>Description</th>
         <th>Amount</th>
         <th>Category</th>
-        <th>Is Recurring</th>
         <th>Recurrence Interval</th>
         <th>Notes</th>
     </tr>
     </thead>
     <tbody>
-    @foreach (var expense in Model)
+    @foreach (var expense in Model.Where(e => e.IsRecurring))
     {
         <tr>
             <td>@expense.Date.ToString("yyyy-MM-dd")</td>
             <td>@expense.Description</td>
             <td>@expense.Amount.ToString("C")</td>
             <td>@expense.Category</td>
-            <td>@expense.IsRecurring ? "Yes" : "No"</td>
-            <td>@expense.IsRecurring ? expense.RecurrenceInterval.ToString() : "N/A"</td>
+            <td>@expense.RecurrenceInterval.ToString()</td>
             <td>@expense.Notes</td>
+              <td>@expense.Notes</td>
+            <td>
+                <a asp-action="EditExpense" asp-route-id="@expense.Id" class="btn btn-warning">Edit</a>
+             </td>
+        </tr>
+    }
+    </tbody>
+</table>
+
+<h3>Non-Recurring Expenses</h3>
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>Date</th>
+        <th>Description</th>
+        <th>Amount</th>
+        <th>Category</th>
+        <th>Notes</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var expense in Model.Where(e => !e.IsRecurring))
+    {
+        <tr>
+            <td>@expense.Date.ToString("yyyy-MM-dd")</td>
+            <td>@expense.Description</td>
+            <td>@expense.Amount.ToString("C")</td>
+            <td>@expense.Category</td>
+            <td>@expense.Notes</td>
+            <td>@expense.IsEstimated</td>
+            <td>
+                <a asp-action="EditExpense" asp-route-id="@expense.Id" class="btn btn-warning">Edit</a>
+            </td>
         </tr>
     }
     </tbody>

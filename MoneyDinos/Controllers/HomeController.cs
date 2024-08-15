@@ -48,6 +48,33 @@ public class HomeController : Controller
         return View(expenses);
     }
 
+    
+    
+    public IActionResult EditExpense(int id)
+    {
+        var expense = _context.Expenses.Find(id);
+        if (expense == null)
+        {
+            return NotFound();
+        }
+        return View(expense);
+    }
+
+    
+    [HttpPost]
+    public IActionResult EditExpense(Expense model)
+    {
+        if (ModelState.IsValid)
+        {
+            _context.Expenses.Update(model);
+            _context.SaveChanges();
+            return RedirectToAction("ExpenseList"); // Redirect to the expense list after saving
+        }
+
+        return View(model); // If validation fails, return to the form with validation messages
+    }
+
+    
     // Example action to test the database connection
     public IActionResult TestDbConnection()
     {
