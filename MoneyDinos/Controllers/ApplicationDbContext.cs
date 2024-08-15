@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 public class ApplicationDbContext : DbContext
 {
     public DbSet<Expense> Expenses { get; set; }
+    public DbSet<Income> Incomes { get; set; } // Add this line for the Income model
 
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
         : base(options)
