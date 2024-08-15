@@ -16,3 +16,54 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+
+
+/*Check Boxes*/
+
+/* General checkbox styling */
+input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
+  vertical-align: middle;
+}
+
+/* Align labels with checkboxes */
+.form-check-label {
+  display: inline-block;
+  margin-bottom: 0;
+  vertical-align: middle;
+  font-size: 16px; /* Adjust font size as needed */
+}
+
+/* Add some spacing around the checkbox containers */
+.form-check {
+  margin-bottom: 15px;
+}
+
+
+/*Nav Bar*/
+.navbar {
+  display: flex;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: #f8f9fa; /* Adjust as needed */
+}
+
+.navbar-brand {
+  display: flex;
+  align-items: center;
+}
+
+.navbar-logo {
+  width: 100px;  /* Adjust size as needed */
+  height: 100%;
+  margin-right: 10px;
+}
+
+.navbar-title {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333; /* Adjust color as needed */
+}

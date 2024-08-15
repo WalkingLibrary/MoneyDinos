@@ -22,7 +22,7 @@ public class Expense
     public decimal Amount { get; set; }
 
     [Required]
-    public string Category { get; set; } // e.g., Food, Utilities, Rent, etc.
+    public ExpenseCategory Category { get; set; } // Using enum for Category // e.g., Food, Utilities, Rent, etc.
 
     public string Notes { get; set; } // Optional additional notes
     
@@ -45,5 +45,17 @@ public enum RecurrenceInterval
     Weekly,
     BiWeekly,
     Monthly,
+    BiMonthly,
+    TriMonthly,
+    SixMonths,
     Yearly
+}
+
+public enum ExpenseCategory
+{
+    SubscriptionServicePayment,
+    Essential,
+    Taxes,
+    Alms,
+    TithesAndOfferings
 }

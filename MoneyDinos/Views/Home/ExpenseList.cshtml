@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<MoneyDinos.Models.Expense>
 
 <h2>Expense List</h2>
-
+<a asp-action="CreateExpense" class="btn btn-primary">Add New Expense</a>
 <h3>Recurring Expenses</h3>
 <table class="table table-striped">
     <thead>
@@ -12,6 +12,7 @@
         <th>Category</th>
         <th>Recurrence Interval</th>
         <th>Notes</th>
+        <th>Is Estimated</th>
     </tr>
     </thead>
     <tbody>
@@ -24,7 +25,7 @@
             <td>@expense.Category</td>
             <td>@expense.RecurrenceInterval.ToString()</td>
             <td>@expense.Notes</td>
-              <td>@expense.Notes</td>
+            <td>@expense.IsEstimated</td>
             <td>
                 <a asp-action="EditExpense" asp-route-id="@expense.Id" class="btn btn-warning">Edit</a>
              </td>
@@ -42,6 +43,7 @@
         <th>Amount</th>
         <th>Category</th>
         <th>Notes</th>
+        <th>Is Estimated</th>
     </tr>
     </thead>
     <tbody>
