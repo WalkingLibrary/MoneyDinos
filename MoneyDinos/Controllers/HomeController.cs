@@ -75,6 +75,82 @@ public class HomeController : Controller
     }
 
     
+    //INcomes
+    public IActionResult IncomeList()
+    {
+        var incomes = _context.Incomes.ToList();
+        return View(incomes);
+    }
+
+    public IActionResult CreateIncome()
+    {
+        return View();
+    }
+
+    [HttpPost]
+    public IActionResult CreateIncome(Income model)
+    {
+        if (ModelState.IsValid)
+        {
+            _context.Incomes.Add(model);
+            _context.SaveChanges();
+            return RedirectToAction("IncomeList");
+        }
+
+        return View(model); // Return the view with validation messages if the model is invalid
+    }
+
+    
+    public IActionResult EditIncome(int id)
+    {
+        var income = _context.Incomes.Find(id);
+        if (income == null)
+        {
+            return NotFound();
+        }
+        return View(income);
+    }
+
+    [HttpPost]
+    public IActionResult EditIncome(Income model)
+    {
+        if (ModelState.IsValid)
+        {
+            _context.Incomes.Update(model);
+            _context.SaveChanges();
+            return RedirectToAction("IncomeList");
+        }
+
+        return View(model); // Return the view with validation messages if the model is invalid
+    }
+    
+// Delete action for Income
+    [HttpPost]
+    public IActionResult DeleteIncome(int id)
+    {
+        var income = _context.Incomes.Find(id);
+        if (income != null)
+        {
+            _context.Incomes.Remove(income);
+            _context.SaveChanges();
+        }
+        return RedirectToAction("IncomeList");
+    }
+
+// Delete action for Expense
+    [HttpPost]
+    public IActionResult DeleteExpense(int id)
+    {
+        var expense = _context.Expenses.Find(id);
+        if (expense != null)
+        {
+            _context.Expenses.Remove(expense);
+            _context.SaveChanges();
+        }
+        return RedirectToAction("ExpenseList");
+    }
+
+    
     // Example action to test the database connection
     public IActionResult TestDbConnection()
     {

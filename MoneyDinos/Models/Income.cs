@@ -35,24 +35,3 @@ namespace MoneyDinos.Models
         public bool IsEstimated { get; set; } // Indicates if the income is estimated or an actual value
     }
 }
-
-// Enum to represent different recurrence intervals
-public enum RecurrenceInterval
-{
-    Daily,
-    Weekly,
-    BiWeekly,
-    Monthly,
-    BiMonthly,
-    TriMonthly,
-    SixMonths,
-    Yearly
-}
-
-public enum IncomeCategory
-{
-    Salary,
-    Bonus,
-    InvestmentInterest,
-    Gift
-}

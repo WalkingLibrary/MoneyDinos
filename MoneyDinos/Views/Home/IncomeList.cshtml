@@ -1,0 +1,36 @@
+﻿@model IEnumerable<MoneyDinos.Models.Income>
+
+<h2>Income List</h2>
+<a asp-action="CreateIncome" class="btn btn-primary">Add New Income</a>
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>Date</th>
+        <th>Description</th>
+        <th>Amount</th>
+        <th>Category</th>
+        <th>Is Recurring</th>
+        <th>Recurrence Interval</th>
+        <th>Notes</th>
+        <th>Is Estimated</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var income in Model)
+    {
+        <tr>
+            <td>@income.Date.ToString("yyyy-MM-dd")</td>
+            <td>@income.Description</td>
+            <td>@income.Amount.ToString("C")</td>
+            <td>@income.Category.ToString()</td>
+            <td>@(income.IsRecurring ? "Yes" : "No")</td>
+            <td>@(income.IsRecurring ? income.RecurrenceInterval.ToString() : "N/A")</td>
+            <td>@income.Notes</td>
+            <td>@income.IsEstimated</td>
+             <td>
+                            <a asp-action="EditIncome" asp-route-id="@income.Id" class="btn btn-warning">Edit</a>
+                        </td> <!-- Edit button -->
+        </tr>
+    }
+    </tbody>
+</table>

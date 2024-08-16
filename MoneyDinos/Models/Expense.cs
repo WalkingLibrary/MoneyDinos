@@ -2,60 +2,42 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace MoneyDinos.Models;
-
-public class Expense
+namespace MoneyDinos.Models
 {
-    [Key]
-    public int Id { get; set; }
+    public class Expense
+    {
+        [Key]
+        public int Id { get; set; }
 
-    [Required]
-    public DateTime Date { get; set; }
+        [Required]
+        public DateTime Date { get; set; }
 
-    [Required]
-    [StringLength(100)]
-    public string Description { get; set; }
+        [Required]
+        [StringLength(100)]
+        public string Description { get; set; }
 
-    [Required]
-    [Column(TypeName = "decimal(18, 2)")]
-    [Range(0.01, double.MaxValue, ErrorMessage = "Amount must be greater than zero")]
-    public decimal Amount { get; set; }
+        [Required]
+        [Column(TypeName = "decimal(18, 2)")]
+        [Range(0.01, double.MaxValue, ErrorMessage = "Amount must be greater than zero")]
+        public decimal Amount { get; set; }
 
-    [Required]
-    public ExpenseCategory Category { get; set; } // Using enum for Category // e.g., Food, Utilities, Rent, etc.
+        [Required]
+        public ExpenseCategory Category { get; set; } // Using enum for Category // e.g., Food, Utilities, Rent, etc.
 
-    public string Notes { get; set; } // Optional additional notes
-    
-    // New fields for recurring expenses
-    [Required]
-    public bool IsRecurring { get; set; } // Indicates if the expense is recurring
+        public string Notes { get; set; } // Optional additional notes
 
-    public RecurrenceInterval? RecurrenceInterval { get; set; } // Nullable, since it only applies if IsRecurring is true
-    
-    // New property to indicate if the expense is estimated
-    [Required]
-    public bool IsEstimated { get; set; } // Indicates if the expense is an estimate or an actual value
+        // New fields for recurring expenses
+        [Required]
+        public bool IsRecurring { get; set; } // Indicates if the expense is recurring
 
+        public RecurrenceInterval?
+            RecurrenceInterval { get; set; } // Nullable, since it only applies if IsRecurring is true
+
+        // New property to indicate if the expense is estimated
+        [Required]
+        public bool IsEstimated { get; set; } // Indicates if the expense is an estimate or an actual value
+
+    }
 }
 
 // Enum to represent different recurrence intervals
-public enum RecurrenceInterval
-{
-    Daily,
-    Weekly,
-    BiWeekly,
-    Monthly,
-    BiMonthly,
-    TriMonthly,
-    SixMonths,
-    Yearly
-}
-
-public enum ExpenseCategory
-{
-    SubscriptionServicePayment,
-    Essential,
-    Taxes,
-    Alms,
-    TithesAndOfferings
-}
