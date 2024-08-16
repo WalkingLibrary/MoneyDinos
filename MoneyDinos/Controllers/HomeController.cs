@@ -151,6 +151,19 @@ public class HomeController : Controller
     }
 
     
+    //Reports
+    public IActionResult MonthlyIncomeReport()
+    {
+        var incomes = _context.Incomes.ToList();
+        var expenses = _context.Expenses.ToList();
+        return View(incomes);
+    }
+
+    public IActionResult ReportsList()
+    {
+        return View();
+    }
+    
     // Example action to test the database connection
     public IActionResult TestDbConnection()
     {
