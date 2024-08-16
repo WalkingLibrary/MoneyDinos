@@ -1,0 +1,40 @@
+﻿@model MoneyDinos.Models.ProjectedBalanceViewModel
+
+<h2>Projected Balance Report</h2>
+
+<form asp-action="ProjectedBalanceReport" method="post">
+    <div class="form-group">
+        <label asp-for="StartDate">Start Date</label>
+        <input asp-for="StartDate" class="form-control" type="date" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="EndDate">End Date</label>
+        <input asp-for="EndDate" class="form-control" type="date" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Generate Report</button>
+</form>
+
+@if (Model.ProjectedBalances != null && Model.ProjectedBalances.Any())
+{
+    <h3>Projected Balances from @Model.StartDate.ToString("yyyy-MM-dd") to @Model.EndDate.ToString("yyyy-MM-dd")</h3>
+
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Date</th>
+            <th>Projected Balance</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var balance in Model.ProjectedBalances)
+        {
+            <tr>
+                <td>@balance.Date.ToString("yyyy-MM-dd")</td>
+                <td>@balance.Amount.ToString("C")</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
