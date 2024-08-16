@@ -30,8 +30,7 @@ namespace MoneyDinos.Models
         [Required]
         public bool IsRecurring { get; set; } // Indicates if the expense is recurring
 
-        public RecurrenceInterval?
-            RecurrenceInterval { get; set; } // Nullable, since it only applies if IsRecurring is true
+        public RecurrenceInterval? RecurrenceInterval { get; set; } // Nullable, since it only applies if IsRecurring is true
 
         // New property to indicate if the expense is estimated
         [Required]

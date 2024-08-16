@@ -18,5 +18,30 @@ namespace MoneyDinos.Models
 
         [Required]
         public bool IsEstimated { get; set; } // Indicates if the balance is estimated
+        
+        
+        // This static method uses the DbContext to get the most recent non-estimated balance
+        public static Balance GetMostUpToDateBalance(ApplicationDbContext context)
+        {
+            // Query the Balances DbSet directly
+            var mostRecentBalance = context.Balances
+                .Where(b => !b.IsEstimated)
+                .OrderByDescending(b => b.Date)
+                .FirstOrDefault();
+
+            // If no non-estimated balance exists, return a new balance with zero amount and current date
+            if (mostRecentBalance == null)
+            {
+                return new Balance
+                {
+                    Date = DateTime.Now,
+                    Amount = 0,
+                    IsEstimated = false
+                };
+            }
+
+            // Return the most recent non-estimated balance
+            return mostRecentBalance;
+        }
     }
 }

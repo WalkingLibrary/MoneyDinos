@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MoneyDinos.Models;
+using MoneyDinos.Util;
 
 namespace MoneyDinos.Controllers;
 
@@ -46,22 +47,19 @@ public class ReportController : Controller
     {
         model.ProjectedBalances = new List<Balance>();
 
+        Balance mostRecentBalance = Balance.GetMostUpToDateBalance(_context);
+        decimal currentBalance = mostRecentBalance.Amount;
         for (DateTime date = model.StartDate; date <= model.EndDate; date = date.AddDays(1))
         {
-            decimal incomeSum = _context.Incomes
-                .Where(i => i.Date <= date && (!i.IsRecurring || (i.IsRecurring && i.RecurrenceInterval == RecurrenceInterval.Daily)))
-                .Sum(i => i.Amount);
+            decimal intervalsTotalIncome = ReportUtil.GetIncomeTotal(date, date, _context.Incomes.ToList());
+            decimal intervalsTotalExpense = ReportUtil.GetExpenseTotal(date, date, _context.Expenses.ToList());
 
-            decimal expenseSum = _context.Expenses
-                .Where(e => e.Date <= date && (!e.IsRecurring || (e.IsRecurring && e.RecurrenceInterval == RecurrenceInterval.Daily)))
-                .Sum(e => e.Amount);
-
-            decimal balanceAmount = incomeSum - expenseSum;
-
+            currentBalance = currentBalance + intervalsTotalIncome;
+            currentBalance = currentBalance - intervalsTotalExpense;
             model.ProjectedBalances.Add(new Balance
             {
                 Date = date,
-                Amount = balanceAmount,
+                Amount = currentBalance,
                 IsEstimated = true
             });
         }
