@@ -1,0 +1,30 @@
+﻿@model IEnumerable<MoneyDinos.Models.Balance>
+
+<h2>Balance List</h2>
+
+<a asp-action="CreateBalance" class="btn btn-primary mb-3">Create New Balance</a>
+
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>Date</th>
+        <th>Amount</th>
+        <th>Is Estimated?</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var balance in Model)
+    {
+        <tr>
+            <td>@balance.Date.ToString("yyyy-MM-dd")</td>
+            <td>@balance.Amount.ToString("C")</td>
+            <td>@(balance.IsEstimated ? "Yes" : "No")</td>
+            <td>
+                <a asp-action="EditBalance" asp-route-id="@balance.Id" class="btn btn-warning">Edit</a>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
+

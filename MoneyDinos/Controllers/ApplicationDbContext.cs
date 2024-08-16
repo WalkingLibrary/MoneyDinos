@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 public class ApplicationDbContext : DbContext
 {
+    public DbSet<Balance> Balances { get; set; } // Adding Balance to the DbContext
     public DbSet<Expense> Expenses { get; set; }
     public DbSet<Income> Incomes { get; set; } // Add this line for the Income model
 
