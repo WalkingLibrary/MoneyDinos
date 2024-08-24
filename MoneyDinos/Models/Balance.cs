@@ -19,6 +19,12 @@ namespace MoneyDinos.Models
         [Required]
         public bool IsEstimated { get; set; } // Indicates if the balance is estimated
         
+        // New properties
+        [NotMapped]
+        public List<Expense> ExpensesUsedToCalculate { get; set; } = new List<Expense>();
+        
+        [NotMapped]
+        public List<Income> IncomesUsedToCalculate { get; set; } = new List<Income>();
         
         // This static method uses the DbContext to get the most recent non-estimated balance
         public static Balance GetMostUpToDateBalance(ApplicationDbContext context)

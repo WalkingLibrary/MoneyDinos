@@ -38,6 +38,34 @@ namespace MoneyDinos.Migrations
                     b.ToTable("Balances");
                 });
 
+            modelBuilder.Entity("MoneyDinos.Models.ExactEntry", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("decimal(65,30)");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<bool>("IsExpense")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<string>("Reason")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("varchar(200)");
+
+                    b.Property<int>("TransactionId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ExactEntries");
+                });
+
             modelBuilder.Entity("MoneyDinos.Models.Expense", b =>
                 {
                     b.Property<int>("Id")

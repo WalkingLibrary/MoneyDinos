@@ -51,17 +51,17 @@ public class ReportController : Controller
         decimal currentBalance = mostRecentBalance.Amount;
         for (DateTime date = model.StartDate; date <= model.EndDate; date = date.AddDays(1))
         {
-            decimal intervalsTotalIncome = ReportUtil.GetIncomeTotal(date, date, _context.Incomes.ToList());
-            decimal intervalsTotalExpense = ReportUtil.GetExpenseTotal(date, date, _context.Expenses.ToList());
+            Balance newBalance = new Balance();
+            newBalance.IsEstimated = true;
+            newBalance.Id = 0;
+            newBalance.Date = date;
+            decimal intervalsTotalIncome = ReportUtil.GetIncomeTotal(_context,date, date, _context.Incomes.ToList(), newBalance);
+            decimal intervalsTotalExpense = ReportUtil.GetExpenseTotal(_context,date, date, _context.Expenses.ToList(), newBalance);
 
             currentBalance = currentBalance + intervalsTotalIncome;
             currentBalance = currentBalance - intervalsTotalExpense;
-            model.ProjectedBalances.Add(new Balance
-            {
-                Date = date,
-                Amount = currentBalance,
-                IsEstimated = true
-            });
+            newBalance.Amount = currentBalance;
+            model.ProjectedBalances.Add(newBalance);
         }
 
         return View(model);

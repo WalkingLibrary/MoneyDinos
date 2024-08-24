@@ -4,30 +4,57 @@ namespace MoneyDinos.Util;
 
 public class ReportUtil
 {
-    public static decimal GetExpenseTotal(DateTime startDate, DateTime endDate, List<Expense> expenses)
+    public static decimal GetExpenseTotal(ApplicationDbContext context,DateTime startDate, DateTime endDate, List<Expense> expenses, Balance balance)
     {
         decimal total = 0;
-
+        List<Expense> expenseUsedToCalculate = new List<Expense>();
+        Expense expenseToUse;
         foreach (var expense in expenses)
         {
-            if (!expense.IsRecurring)
+            expenseToUse = expense;
+            if (!expenseToUse.IsRecurring)
             {
-                // If the expense is not recurring, check if it falls within the date range
-                if (expense.Date >= startDate && expense.Date <= endDate)
+                ExactEntry exactEntry = context.GetOverWritingExactEntry(expense.Id, expense.Date);
+                if (exactEntry != null)
                 {
-                    total += (decimal)expense.Amount;
+                    expenseToUse = new Expense()
+                    {
+                        Amount = exactEntry.Amount,
+                        Date = expense.Date,
+                        IsRecurring = expense.IsRecurring,
+                    };
+                }
+                // If the expense is not recurring, check if it falls within the date range
+                if (expenseToUse.Date >= startDate && expenseToUse.Date <= endDate)
+                {
+                    expenseUsedToCalculate.Add(expenseToUse);
+                    total += (decimal)expenseToUse.Amount;
                 }
             }
             else
             {
                 // Handle recurring expenses
-                DateTime currentDate = expense.Date;
+                DateTime currentDate = expenseToUse.Date;
+                
 
                 while (currentDate <= endDate)
                 {
+                    expenseToUse = expense;
+                    ExactEntry exactEntry = context.GetOverWritingExactEntry(expense.Id, currentDate);
+                    if (exactEntry != null)
+                    {
+                        expenseToUse = new Expense()
+                        {
+                            Amount = exactEntry.Amount,
+                            Date = expense.Date,
+                            IsRecurring = expense.IsRecurring,
+                        };
+                    }
                     if (currentDate >= startDate && currentDate <= endDate)
                     {
-                        total += (decimal)expense.Amount;
+                        
+                        expenseUsedToCalculate.Add(expenseToUse);
+                        total += (decimal)expenseToUse.Amount;
                     }
 
                     // Determine the next occurrence date based on the recurrence interval
@@ -36,6 +63,7 @@ public class ReportUtil
             }
         }
 
+        balance.ExpensesUsedToCalculate = expenseUsedToCalculate;
         return total;
     }
 
@@ -73,30 +101,55 @@ public class ReportUtil
     }
 
     
-    public static decimal GetIncomeTotal(DateTime startDate, DateTime endDate, List<Income> incomes)
+    public static decimal GetIncomeTotal(ApplicationDbContext context, DateTime startDate, DateTime endDate, List<Income> incomes, Balance balance)
     {
         decimal total = 0;
-
+        List<Income> incomesUsedToCalculate = new List<Income>();
+        Income incomeToUse;
         foreach (var income in incomes)
         {
-            if (!income.IsRecurring)
+            incomeToUse = income;
+            if (!incomeToUse.IsRecurring)
             {
-                // If the income is not recurring, check if it falls within the date range
-                if (income.Date >= startDate && income.Date <= endDate)
+                ExactEntry exactEntry = context.GetOverWritingExactEntry(income.Id, income.Date);
+                if (exactEntry != null)
                 {
-                    total += (decimal)income.Amount;
+                    incomeToUse = new Income()
+                    {
+                        Amount = exactEntry.Amount,
+                        Date = income.Date,
+                        IsRecurring = income.IsRecurring,
+                    };
+                }
+                // If the income is not recurring, check if it falls within the date range
+                if (incomeToUse.Date >= startDate && incomeToUse.Date <= endDate)
+                {
+                    incomesUsedToCalculate.Add(incomeToUse);
+                    total += (decimal)incomeToUse.Amount;
                 }
             }
             else
             {
                 // Handle recurring incomes
-                DateTime currentDate = income.Date;
+                DateTime currentDate = incomeToUse.Date;
 
                 while (currentDate <= endDate)
                 {
+                    incomeToUse = income;
+                    ExactEntry exactEntry = context.GetOverWritingExactEntry(income.Id, currentDate);
+                    if (exactEntry != null)
+                    {
+                        incomeToUse = new Income()
+                        {
+                            Amount = exactEntry.Amount,
+                            Date = income.Date,
+                            IsRecurring = income.IsRecurring,
+                        };
+                    }
                     if (currentDate >= startDate && currentDate <= endDate)
                     {
-                        total += (decimal)income.Amount;
+                        incomesUsedToCalculate.Add(incomeToUse);
+                        total += (decimal)incomeToUse.Amount;
                     }
 
                     // Determine the next occurrence date based on the recurrence interval
@@ -105,6 +158,7 @@ public class ReportUtil
             }
         }
 
+        balance.IncomesUsedToCalculate = incomesUsedToCalculate;
         return total;
     }
 

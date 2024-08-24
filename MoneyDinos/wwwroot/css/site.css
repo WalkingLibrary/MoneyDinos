@@ -34,7 +34,7 @@ body {
 
 table
 {
-  font-size: 2vw;
+  font-size: 1.1vw;
   margin: unset;
 }
 
@@ -152,4 +152,55 @@ body::before {
   font-size: 8rem;
   font-weight: 100;
   font-style: normal;
+}
+
+
+/*Expense Overrides Based Off of ID*/
+
+
+/*Report Calendar Cells*/
+.calendar-cell {
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin: 10px 0;
+}
+
+.date, .amount {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.toggle-breakdown {
+  margin-top: 10px;
+  padding: 5px 10px;
+  cursor: pointer;
+  background: none;
+  border: none;
+  outline: none;
+}
+
+.toggle-breakdown svg {
+  vertical-align: middle;
+}
+
+.breakdown {
+  margin-top: 10px;
+  padding: 10px;
+  border: 1px solid darkgreen;
+  font-size: 10px;
+  color: black;
+  background-color: whitesmoke;
+}
+
+li {
+  list-style: none;
+}
+
+.breakdown ul {
+  padding: 0px;
+}
+
+.reportEntryButton
+{
+  font-size: 12px;
 }

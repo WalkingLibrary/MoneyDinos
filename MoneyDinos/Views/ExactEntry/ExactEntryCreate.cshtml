@@ -1,0 +1,81 @@
+﻿@model MoneyDinos.Models.ExactEntry
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="alert alert-danger">
+        <ul>
+            @foreach (var error in ViewData.ModelState.Values.SelectMany(state => state.Errors))
+            {
+                <li>@error.ErrorMessage</li>
+            }
+        </ul>
+    </div>
+}
+
+
+<h2>Create Exact Entry</h2>
+
+<form asp-action="ExactEntryCreate">
+    <input type="hidden" asp-for="TransactionId" />
+    <input type="hidden" asp-for="IsExpense" />
+
+    <div class="form-group">
+        <label asp-for="Date"></label>
+        <input asp-for="Date" class="form-control" value="@Model.Date.ToString("yyyy-MM-dd")" type="date" />
+    </div>
+    
+    <div class="form-group">
+        <label asp-for="Amount"></label>
+        <input asp-for="Amount" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Reason"></label>
+        <input asp-for="Reason" class="form-control" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save</button>
+    <a asp-action="ExactEntryList" class="btn btn-secondary">Cancel</a>
+</form>
+
+@if (Model.TransactionDetails != null)
+{
+
+
+    <div class="transaction-details">
+        <h3>Transaction Details</h3>
+        @if (Model.IsExpense)
+        {
+            var expense = Model.TransactionDetails as MoneyDinos.Models.Expense;
+            <div class="form-group">
+                <label>Description</label>
+                <input type="text" class="form-control" value="@expense.Description" readonly style="background-color: #e9ecef;">
+            </div>
+            <div class="form-group">
+                <label>Amount</label>
+                <input type="text" class="form-control" value="@expense.Amount.ToString("C")" readonly style="background-color: #e9ecef;">
+            </div>
+            <div class="form-group">
+                <label>Date</label>
+                <input type="text" class="form-control" value="@expense.Date.ToString("yyyy-MM-dd")" readonly style="background-color: #e9ecef;">
+            </div>
+            <!-- Add more fields specific to Expense if necessary -->
+        }
+        else
+        {
+            var income = Model.TransactionDetails as MoneyDinos.Models.Income;
+            <div class="form-group">
+                <label>Description</label>
+                <input type="text" class="form-control" value="@income.Description" readonly style="background-color: #e9ecef;">
+            </div>
+            <div class="form-group">
+                <label>Amount</label>
+                <input type="text" class="form-control" value="@income.Amount.ToString("C")" readonly style="background-color: #e9ecef;">
+            </div>
+            <div class="form-group">
+                <label>Date</label>
+                <input type="text" class="form-control" value="@income.Date.ToString("yyyy-MM-dd")" readonly style="background-color: #e9ecef;">
+            </div>
+            <!-- Add more fields specific to Income if necessary -->
+        }
+    </div>
+}

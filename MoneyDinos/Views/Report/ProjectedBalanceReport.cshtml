@@ -35,10 +35,57 @@
                     @foreach (var dayBalance in Model.ProjectedBalances.Where(b => b.Date.Month == balance))
                     {
                         var colorClass = GetColorClass(previousBalance, dayBalance.Amount);
+                        var incomes = dayBalance.IncomesUsedToCalculate.ToList();
+                        var expenses = dayBalance.ExpensesUsedToCalculate.ToList();
 
                         <div class="calendar-cell @colorClass">
                             <div class="date">@dayBalance.Date.ToString("MM-dd")</div>
                             <div class="amount">@dayBalance.Amount.ToString("C")</div>
+                            @if (incomes.Any() || expenses.Any())
+                                                {
+                                                    <button class="toggle-breakdown" onclick="toggleBreakdown(this)">
+                                                          <svg class="down-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                                                    <path fill-rule="evenodd" d="M1.5 3.5a.5.5 0 0 1 .5-.5h12a.5.5 0 0 1 .354.854l-6 6a.5.5 0 0 1-.708 0l-6-6A.5.5 0 0 1 1.5 3.5z"/>
+                                                                </svg>
+                                                                <svg class="up-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" style="display: none;">
+                                                                    <path fill-rule="evenodd" d="M14.5 12.5a.5.5 0 0 1-.5.5h-12a.5.5 0 0 1-.354-.854l6-6a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 .146.354z"/>
+                                                                </svg>
+                                                    </button>
+                                                    <div class="breakdown" style="display: none;">
+                                                        @if (incomes.Any())
+                                                        {
+                                                            <div class="income-breakdown">
+                                                                <strong>Incomes:</strong>
+                                                                <ul>
+                                                                    @foreach (var income in incomes)
+                                                                    {
+                                                                        <li>
+                                                                            @income.Description: @income.Amount.ToString("C")
+                                                                            <!-- Add button for Exact Entry creation for Income -->
+                                                                            <a href="@Url.Action("ExactEntryCreate", "ExactEntry", new { TransactionId = income.Id, IsExpense = false, date = income.Date, amount = income.Amount })" class="btn btn-warning reportEntryButton">Add Exact Entry</a>
+                                                                        </li>
+                                                                    }
+                                                                </ul>
+                                                            </div>
+                                                        }
+
+                                                        @if (expenses.Any())
+                                                        {
+                                                            <div class="expense-breakdown">
+                                                                <strong>Expenses:</strong>
+                                                                <ul>
+                                                                    @foreach (var expense in expenses)
+                                                                    {
+                                                                        <li>@expense.Description: @expense.Amount.ToString("C")
+                                                                            <!-- Add button for Exact Entry creation for Expense -->
+                                                                            <a href="@Url.Action("ExactEntryCreate", "ExactEntry", new { TransactionId = expense.Id, IsExpense = true, date = expense.Date, amount = expense.Amount })" class="btn btn-warning reportEntryButton">Add Exact Entry</a>
+                                                                        </li>
+                                                                    }
+                                                                </ul>
+                                                            </div>
+                                                        }
+                                                    </div>
+                                                }
                         </div>
 
                         previousBalance = dayBalance.Amount;

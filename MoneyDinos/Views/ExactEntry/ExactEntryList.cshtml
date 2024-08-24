@@ -1,0 +1,33 @@
+﻿@model IEnumerable<MoneyDinos.Models.ExactEntry>
+
+<h2>Exact Entries</h2>
+
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>Date</th>
+        <th>Is Expense</th>
+        <th>Transaction ID</th>
+        <th>Amount</th>
+        <th>Reason</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var entry in Model)
+    {
+        <tr>
+            <td>@entry.Date.ToString("yyyy-MM-dd")</td>
+            <td>@(entry.IsExpense ? "Expense" : "Income")</td>
+            <td>@entry.TransactionId</td>
+            <td>@entry.Amount.ToString("C")</td>
+            <td>@entry.Reason</td>
+            <td>
+                <a asp-action="ExactEntryEdit" asp-route-id="@entry.Id" class="btn btn-primary">Edit</a>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
+
+<a asp-action="ExactEntryCreate" class="btn btn-success">Add New Exact Entry</a>
